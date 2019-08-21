@@ -5,6 +5,7 @@ from flask import send_from_directory
 import cv2
 import numpy as np
 import utils
+# import tensorflow as tf
 from PIL import Image
 from plate_color_detect import detect_color
 import os
@@ -16,7 +17,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 input_size      = 416
 
-UPLOAD_FOLDER = '/home/cupcon/sqs/yolov3-tf/plate_rec_tfserving/pre_out/'
+UPLOAD_FOLDER = './pre_out/'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)

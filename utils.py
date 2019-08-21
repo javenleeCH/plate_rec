@@ -16,6 +16,7 @@ from PIL import Image,ImageDraw,ImageFont
 import random
 import colorsys
 import numpy as np
+# import tensorflow as tf
 from config import cfg
 
 
