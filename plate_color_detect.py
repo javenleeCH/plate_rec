@@ -4,6 +4,10 @@ import numpy as np
 
 def detect_color(im_cv):
     im_cv = cv2.imread(im_cv)
+    if im_cv.shape[0] > 1500:
+        im_cv = cv2.resize(im_cv, (im_cv.shape[1]//2, im_cv.shape[0]//2))
+    elif im_cv.shape[0] < 600:
+        im_cv = cv2.resize(im_cv, (im_cv.shape[1] * 2, im_cv.shape[0] * 2))
     hsv = cv2.cvtColor(im_cv, cv2.COLOR_BGR2HSV)
     # 黄牌
     yellow_lower = np.array([22, 60, 200], np.uint8)
@@ -12,8 +16,8 @@ def detect_color(im_cv):
     blue_lower = np.array([99, 100, 130], np.uint8)
     blue_upper = np.array([115, 250, 200], np.uint8)
     # 绿牌
-    green_lower = np.array([50, 0, 200], np.uint8)
-    green_upper = np.array([70, 70, 255], np.uint8)
+    green_lower = np.array([50, 0, 190], np.uint8)
+    green_upper = np.array([70, 70, 213], np.uint8)
 
     yellow = cv2.inRange(hsv, yellow_lower, yellow_upper)
     blue = cv2.inRange(hsv, blue_lower, blue_upper)
@@ -43,7 +47,7 @@ def detect_color(im_cv):
     (contours, hierarchy)=cv2.findContours(yellow, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     for pic, contour in enumerate(contours):
         area = cv2.contourArea(contour)
-        if area > 2000:
+        if 2000>area > 800:
             x, y, w, h = cv2.boundingRect(contour)
             if 3> w/h >2:
                 img_y = cv2.rectangle(im_cv, (x, y), (x + w, y + h), (0, 255, 0), 2)
@@ -56,7 +60,7 @@ def detect_color(im_cv):
     (contours, hierarchy) = cv2.findContours(blue, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     for pic, contour in enumerate(contours):
         area = cv2.contourArea(contour)
-        if area > 1600:
+        if 2000>area > 800:
             x, y, w, h = cv2.boundingRect(contour)
             if 3> w/h >2:
                 img_b = cv2.rectangle(im_cv, (x, y), (x + w, y + h), (255, 0, 0), 2)
@@ -69,7 +73,7 @@ def detect_color(im_cv):
     (contours, hierarchy)=cv2.findContours(green, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     for pic, contour in enumerate(contours):
         area = cv2.contourArea(contour)
-        if area > 2000:
+        if 2000>area > 800:
             x, y, w, h = cv2.boundingRect(contour)
             if 3.5> w/h >2:
                 img_g = cv2.rectangle(im_cv, (x, y), (x + w, y + h), (255, 255, 255), 2)
@@ -79,7 +83,6 @@ def detect_color(im_cv):
 
     # cv2.imshow("Color Tracking", im_cv)
     # cv2.waitKey(0)
-    cv2.imwrite("s1.jpg", im_cv)
+    # cv2.imwrite("s1.jpg", im_cv)
     return green_plate, blue_plate, yellow_plate
-
 

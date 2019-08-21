@@ -5,6 +5,7 @@ from flask import send_from_directory
 import cv2
 import numpy as np
 import utils
+from PIL import Image
 from plate_color_detect import detect_color
 import os
 import json
@@ -15,7 +16,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 input_size      = 416
 
-UPLOAD_FOLDER = './pre_out/'
+UPLOAD_FOLDER = '/home/cupcon/sqs/yolov3-tf/plate_rec_tfserving/pre_out/'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
@@ -34,6 +35,9 @@ def allowed_file(filename):
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
+    for i in os.listdir("./pre_out/"):
+        if os.path.splitext(i)[1] == '.jpg':
+            os.remove("./pre_out/" + i)
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
@@ -113,3 +117,5 @@ def is_img(img_cv, color):
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
+    # detect_color('/home/cupcon/sqs/yolov3-tf/plate_rec_tfserving/WechatIMG14.jpeg')
+    # print('asd')
