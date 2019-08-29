@@ -1,8 +1,15 @@
-version: '2.1'
+version: "2.1"
 
 services:
   plate_rec:
-    image: plate_rec
-    build: .
+    image: 192.168.1.219:5000/peng/plate_rec:latest
     ports:
-      - 5000:5000
+      - "5000:5000"
+  tensorflow_serving:
+    image: 192.168.1.219:5000/tensorflow/serving:latest-gpu
+    volumes: 
+      - /home/cupcon/sqs/yolov3-tf/yolov3/tttt:/models/yolov3
+    environment:
+      - MODEL_NAME:yolov3
+    ports:
+      - "8500:8501"

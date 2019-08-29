@@ -17,11 +17,13 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 input_size      = 416
 
-UPLOAD_FOLDER = './pre_out/'
+UPLOAD_FOLDER = './upload/'
+PRE_FOLDER = './pre_out/'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['PRE_FOLDER'] = PRE_FOLDER
 
 
 def allowed_file(filename):
@@ -36,6 +38,9 @@ def allowed_file(filename):
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
+    for i in os.listdir("./upload/" ):
+        if os.path.splitext(i)[1] == '.jpg':
+            os.remove("./upload/" + i)
     for i in os.listdir("./pre_out/"):
         if os.path.splitext(i)[1] == '.jpg':
             os.remove("./pre_out/" + i)
@@ -69,14 +74,14 @@ def upload_file():
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     print(filename)
-    g_plate, b_plate, y_plate = detect_color("pre_out/"+filename)
+    g_plate, b_plate, y_plate = detect_color("upload/"+filename)
     is_img(g_plate, 'g')
     is_img(b_plate, 'b')
     is_img(y_plate, 'y')
-    os.remove("pre_out/" + filename)
+    # os.remove("pre_out/" + filename)
     for i in os.listdir("./pre_out/"):
         if os.path.splitext(i)[1] == '.jpg':
-            return send_from_directory(app.config['UPLOAD_FOLDER'],
+            return send_from_directory(app.config['PRE_FOLDER'],
                                 i)
 
 def is_img(img_cv, color):
@@ -117,6 +122,6 @@ def is_img(img_cv, color):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(host='0.0.0.0')
     # detect_color('/home/cupcon/sqs/yolov3-tf/plate_rec_tfserving/WechatIMG14.jpeg')
     # print('asd')
