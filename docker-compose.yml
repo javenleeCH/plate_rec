@@ -5,8 +5,12 @@ services:
     image: "192.168.1.219:5000/peng/plate_rec:latest"
     ports:
       - "5000:5000"
+    depends_on:
+      - tensorflow_serving
     links:
       - "tensorflow_serving:tf"
+    environment:
+     TF_PORT: 8501
   tensorflow_serving:
     image: "192.168.1.219:5000/tensorflow/serving:latest-gpu"
     volumes: 
