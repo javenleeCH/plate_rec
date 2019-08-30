@@ -103,7 +103,7 @@ def is_img(img_cv, color):
             headers = {"content-type": "application/json"}
             num_classes=65
             json_response = requests.post(
-                'http://172.20.81.241:8500/v1/models/yolov3:predict', data=data, headers=headers)
+                'http://tensorflow_serving:8500/v1/models/yolov3:predict', data=data, headers=headers)
             predictions = json.loads(json_response.text)['predictions']
 
             pred_sbbox, pred_mbbox, pred_lbbox =predictions[0]['pred_sbbox'],predictions[0]['pred_mbbox'],predictions[0]['pred_lbbox']
