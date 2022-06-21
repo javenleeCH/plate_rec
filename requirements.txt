@@ -4,6 +4,6 @@ Click==7.0
 easydict==1.9
 Flask==1.1.1
 Jinja2==2.10.1
-numpy==1.16.4
+numpy==1.22.0
 Pillow==6.1.0
 requests==2.22.0
